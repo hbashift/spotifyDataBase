@@ -11,11 +11,19 @@ import (
 func main() {
 
 	db, err := sqlx.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		"localhost", "5432", "postgres", "afimall", "12345", "disable"))
+		"localhost", "5432", "postgres", "testest", "12345", "disable"))
 
 	if err != nil {
 		fmt.Println(err)
+		fmt.Println("хуйхуй")
 	}
+
+	defer func(db *sqlx.DB) {
+		err := db.Close()
+		if err != nil {
+
+		}
+	}(db)
 
 	err = db.Ping()
 
@@ -24,11 +32,10 @@ func main() {
 	}
 
 	generator.CreateTables(db)
+
 	generator.FillInDataBase(db)
 
-	err = db.Close()
+	generator.GenerateData(db)
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	fmt.Println("all tables are created and filled")
 }

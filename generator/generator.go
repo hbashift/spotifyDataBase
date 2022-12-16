@@ -80,95 +80,21 @@ func CreateTables(db *sqlx.DB) {
 }
 
 func FillInDataBase(db *sqlx.DB) {
-	enums, _ := ioutil.ReadFile("sqlScripts/enums.sql")
-	sqlScript := string(enums)
 
-	db.MustExec(sqlScript)
+	scriptsPath := []string{"sqlScripts/enums.sql", "sqlScripts/musician.sql", "sqlScripts/podcast.sql",
+		"sqlScripts/track.sql", "sqlScripts/_user_.sql", "sqlScripts/album.sql", "sqlScripts/updateUsers.sql"}
 
-	musicians, _ := ioutil.ReadFile("sqlScripts/musician.sql")
-	sqlScript = string(musicians)
+	for _, scriptPath := range scriptsPath {
+		script, err := ioutil.ReadFile(scriptPath)
 
-	db.MustExec(sqlScript)
+		if err != nil {
+			panic(err)
+		}
 
-	podcast, _ := ioutil.ReadFile("sqlScripts/podcast.sql")
-	sqlScript = string(podcast)
+		stringScript := string(script)
 
-	db.MustExec(sqlScript)
-
-	track, _ := ioutil.ReadFile("sqlScripts/track.sql")
-	sqlScript = string(track)
-
-	db.MustExec(sqlScript)
-
-	podcastEp, _ := ioutil.ReadFile("sqlScripts/podcast_episode.sql")
-	sqlScript = string(podcastEp)
-
-	db.MustExec(sqlScript)
-
-	user, _ := ioutil.ReadFile("sqlScripts/_user_.sql")
-	sqlScript = string(user)
-
-	db.MustExec(sqlScript)
-
-	playlist, _ := ioutil.ReadFile("sqlScripts/playlist.sql")
-	sqlScript = string(playlist)
-
-	db.MustExec(sqlScript)
-
-	album, _ := ioutil.ReadFile("sqlScripts/album.sql")
-	sqlScript = string(album)
-
-	db.MustExec(sqlScript)
-
-	userPlaylist, _ := ioutil.ReadFile("sqlScripts/user_playlist.sql")
-	sqlScript = string(userPlaylist)
-
-	db.MustExec(sqlScript)
-
-	musicianAlbum, _ := ioutil.ReadFile("sqlScripts/musician_album.sql")
-	sqlScript = string(musicianAlbum)
-
-	db.MustExec(sqlScript)
-
-	albumTrack, _ := ioutil.ReadFile("sqlScripts/album_track.sql")
-	sqlScript = string(albumTrack)
-
-	db.MustExec(sqlScript)
-
-	userMusician, _ := ioutil.ReadFile("sqlScripts/user_musician.sql")
-	sqlScript = string(userMusician)
-
-	db.MustExec(sqlScript)
-
-	userAlbum, _ := ioutil.ReadFile("sqlScripts/user_album.sql")
-	sqlScript = string(userAlbum)
-
-	db.MustExec(sqlScript)
-
-	userTrack, _ := ioutil.ReadFile("sqlScripts/user_track.sql")
-	sqlScript = string(userTrack)
-
-	db.MustExec(sqlScript)
-
-	userPodcast, _ := ioutil.ReadFile("sqlScripts/user_podcast.sql")
-	sqlScript = string(userPodcast)
-
-	db.MustExec(sqlScript)
-
-	userPodcastEp, _ := ioutil.ReadFile("sqlScripts/user_podcast_ep.sql")
-	sqlScript = string(userPodcastEp)
-
-	db.MustExec(sqlScript)
-
-	trackPlaylist, _ := ioutil.ReadFile("sqlScripts/track_playlist.sql")
-	sqlScript = string(trackPlaylist)
-
-	db.MustExec(sqlScript)
-
-	subscribes, _ := ioutil.ReadFile("sqlScripts/subscribes.sql")
-	sqlScript = string(subscribes)
-
-	db.MustExec(sqlScript)
+		db.MustExec(stringScript)
+	}
 }
 
 func GenerateData(db *sqlx.DB) {

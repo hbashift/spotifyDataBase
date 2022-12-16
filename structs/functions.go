@@ -19,19 +19,23 @@ func RandDate() time.Time {
 
 func RandStringBytes(n int) string {
 	b := make([]byte, n)
+
 	for i := range b {
 		b[i] = letterBytes[rand.Intn(len(letterBytes))]
 	}
+
 	return string(b)
 }
 
 func RandomBool() bool {
 	rand.Seed(time.Now().UnixNano())
+
 	return rand.Intn(2) == 1
 }
 
 func RandomAmount() int {
 	rand.Seed(time.Now().UnixNano())
+
 	return rand.Intn(300-150) + 300
 }
 
