@@ -1,6 +1,8 @@
 package structs
 
-import "time"
+import (
+	"time"
+)
 
 type Musician struct {
 	MusicianId string `db:"musician_id"`
@@ -16,6 +18,15 @@ type Podcast struct {
 
 type Track struct {
 	TrackId string `db:"track_id"`
+}
+
+type RandomTrack struct {
+	TrackName string `csv:"song"`
+	Explicit  bool   `db:"explicit"`
+}
+
+type RandomMusician struct {
+	MusicianName string `csv:"artist"`
 }
 
 type User struct {
@@ -53,4 +64,20 @@ type PodcastEpisodeDTO struct {
 	FileAddress string
 	PodcastIdFk string
 	PodcastEpId string
+}
+
+type TrackDTO struct {
+	Title        string `db:"title"`
+	LyricsAuthor string `db:"lyrics_author"`
+	Lyrics       string `db:"lyrics"`
+	Explicit     bool   `db:"explicit"`
+	FileAddress  string `db:"file_address"`
+	TrackId      string `db:"track_id"`
+}
+
+type MusicianDTO struct {
+	Nickname   string `db:"nickname"`
+	Email      string `db:"email"`
+	Password   string `db:"password"`
+	MusicianId string `db:"musician_id"`
 }

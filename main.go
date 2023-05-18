@@ -1,7 +1,7 @@
 package main
 
 import (
-	"db_seminar/generator"
+	"db_seminar/newGenerator"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
@@ -11,7 +11,7 @@ import (
 func main() {
 
 	db, err := sqlx.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
-		"localhost", "5432", "postgres", "testest", "12345", "disable"))
+		"localhost", "5432", "postgres", "oait", "12345", "disable"))
 
 	if err != nil {
 		fmt.Println(err)
@@ -31,11 +31,11 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	generator.CreateTables(db)
+	//newGenerator.CreateTables(db)
 
-	generator.FillInDataBase(db)
+	//newGenerator.FillInDataBase(db)
 
-	generator.GenerateData(db)
+	newGenerator.GenerateData(db)
 
 	fmt.Println("all tables are created and filled")
 }

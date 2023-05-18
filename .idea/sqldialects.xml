@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/generator/generator.go" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/generator/random_structs.go" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/main.go" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/newGenerator/generator.go" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/newGenerator/random_structs.go" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/sqlScripts/spotify.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/sqlScripts/updateUsers.sql" dialect="PostgreSQL" />
   </component>

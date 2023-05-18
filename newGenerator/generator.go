@@ -1,11 +1,16 @@
-package generator
+package newGenerator
 
 import (
 	"db_seminar/structs"
+	"encoding/csv"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"io"
 	"io/ioutil"
+	"log"
 	"math/rand"
+	"os"
+	"strconv"
 )
 
 func ParseDB(db *sqlx.DB) ([]structs.Musician, []structs.Podcast, []structs.Track, []structs.User, []structs.Album) {
@@ -81,8 +86,8 @@ func CreateTables(db *sqlx.DB) {
 
 func FillInDataBase(db *sqlx.DB) {
 
-	scriptsPath := []string{"newSQLScripts/enums.sql", "newSQLScripts/musician.sql", "newSQLScripts/podcast.sql",
-		"newSQLScripts/track.sql", "newSQLScripts/_user_.sql", "newSQLScripts/album.sql", "newSQLScripts/updateUsers.sql"}
+	scriptsPath := []string{"newSQLScripts/enums.sql", "newSQLScripts/podcast.sql", "newSQLScripts/_user_.sql",
+		"newSQLScripts/album.sql", "newSQLScripts/updateUsers.sql"}
 
 	for _, scriptPath := range scriptsPath {
 		script, err := ioutil.ReadFile(scriptPath)
@@ -97,10 +102,85 @@ func FillInDataBase(db *sqlx.DB) {
 	}
 }
 
+func GenerateMusicians(db *sqlx.DB) {
+	var musicians []structs.RandomMusician
+
+	f, err := os.Open("songs_normalize.csv")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	reader := csv.NewReader(f)
+	_, err = reader.Read()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for i := 0; i < 400; i++ {
+		var musician structs.RandomMusician
+		row, err := reader.Read()
+
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		musician = structs.RandomMusician{
+			MusicianName: row[0],
+		}
+
+		musicians = append(musicians, musician)
+	}
+
+	GenerateMusician(db, musicians)
+}
+
+func GenerateTracks(db *sqlx.DB) {
+	var tracks []structs.RandomTrack
+
+	f, err := os.Open("songs_normalize.csv")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	reader := csv.NewReader(f)
+	_, err = reader.Read()
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for i := 0; i < 400; i++ {
+		var track structs.RandomTrack
+		row, err := reader.Read()
+
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		explicit, _ := strconv.ParseBool(row[3])
+
+		track = structs.RandomTrack{
+			TrackName: row[1],
+			Explicit:  explicit,
+		}
+
+		tracks = append(tracks, track)
+	}
+
+	GenerateTrack(db, tracks)
+}
+
 func GenerateData(db *sqlx.DB) {
-
+	//GenerateMusicians(db)
+	GenerateTracks(db)
 	musicians, podcasts, tracks, users, albums := ParseDB(db)
-
 	GeneratePlaylist(db, users)
 	GeneratePodcastEP(db, podcasts)
 	GenerateUserPlaylist(db, users)
